@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALWAYS, SOMEWHERE</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: #0b0b0c;
+      color: #e5d5b2;
+      font-family: Georgia, serif;
+      text-align: center;
+    }
+    main { max-width: 620px; }
+    .symbol { color: #b99a5b; font-size: 30px; }
+    h1 {
+      margin: 24px 0 14px;
+      color: #c6a96b;
+      font-size: clamp(32px, 8vw, 58px);
+      font-weight: normal;
+      letter-spacing: 5px;
+    }
+    .tagline { font-size: 19px; font-style: italic; color: #d1c5ad; }
+    .line { width: 80px; border: 0; border-top: 1px solid #80683d; margin: 30px auto; }
+    p { color: #9b9487; line-height: 1.9; }
+    button {
+      margin-top: 20px;
+      padding: 13px 32px;
+      border: 1px solid #b99a5b;
+      background: tran
+        sparent;
+      color: #d8bd82;
+      font: inherit;
+      letter-spacing: 3px;
+      cursor: pointer;
+    }
+    button:hover { background: #c6a96b; color: #0b0b0c; }
+    #note { display: none; }
+    footer { margin-top: 55px; color: #625c51; font-size: 12px; letter-spacing: 2px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="symbol">♟</div>
+    <h1>ALWAYS, SOMEWHERE</h1>
+    <div class="tagline">A place where you can always find me.</div>
+    <hr class="line">
+    <p>Every detail has a purpose.<br>Every move has a meaning.<br>Some connections are worth finding again.</p>
+    <button onclick="document.getElementById('note').style.display='block'; this.style.display='none';">ENTER</button>
+    <p id="note">You found your way here.<br>Somewhere, a conversation is waiting.<br><br><em>This place is still being built.</em></p>
+    <footer>A PRIVATE CORNER OF THE WORLD</footer>
+  </main>
+</body>
+</html>
