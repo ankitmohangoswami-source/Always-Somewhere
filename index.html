@@ -1,61 +1,271 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ALWAYS, SOMEWHERE</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: #0b0b0c;
-      color: #e5d5b2;
-      font-family: Georgia, serif;
-      text-align: center;
-    }
-    main { max-width: 620px; }
-    .symbol { color: #b99a5b; font-size: 30px; }
-    h1 {
-      margin: 24px 0 14px;
-      color: #c6a96b;
-      font-size: clamp(32px, 8vw, 58px);
-      font-weight: normal;
-      letter-spacing: 5px;
-    }
-    .tagline { font-size: 19px; font-style: italic; color: #d1c5ad; }
-    .line { width: 80px; border: 0; border-top: 1px solid #80683d; margin: 30px auto; }
-    p { color: #9b9487; line-height: 1.9; }
-    button {
-      margin-top: 20px;
-      padding: 13px 32px;
-      border: 1px solid #b99a5b;
-      background: tran
-        sparent;
-      color: #d8bd82;
-      font: inherit;
-      letter-spacing: 3px;
-      cursor: pointer;
-    }
-    button:hover { background: #c6a96b; color: #0b0b0c; }
-    #note { display: none; }
-    footer { margin-top: 55px; color: #625c51; font-size: 12px; letter-spacing: 2px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALWAYS, SOMEWHERE</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Special+Elite&display=swap');
+
+:root {
+  --gold: #c9a45c;
+  --pale-gold: #ecd49a;
+  --ink: #080806;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--pale-gold);
+  font-family: 'Cinzel', Georgia, serif;
+}
+
+.room {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 35px 18px;
+  background:
+    radial-gradient(ellipse at 50% 45%, #352719 0%, #17130d 38%, #070706 78%);
+}
+
+.room::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  opacity: .43;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 110px,
+      #49351d 111px, transparent 114px),
+    linear-gradient(180deg, #17130d, #050505 80%);
+}
+
+.room::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse, transparent 25%, #000 100%);
+}
+
+.wall {
+  position: absolute;
+  inset: 4% 3% 20%;
+  opacity: .72;
+  border: 1px solid #61451f;
+  background:
+    linear-gradient(31deg, transparent 49.7%, #704c24 50%, transparent 50.3%),
+    linear-gradient(148deg, transparent 49.7%, #704c24 50%, transparent 50.3%),
+    repeating-linear-gradient(0deg, transparent 0 95px, #3b2b18 96px, transparent 98px),
+    repeating-linear-gradient(90deg, transparent 0 125px, #3b2b18 126px, transparent 128px);
+}
+
+.clues {
+  position: absolute;
+  inset: 6% 5% 24%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px;
+  transform: rotate(-1deg);
+  pointer-events: none;
+}
+
+.clue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  border: 1px solid #72532e;
+  background: linear-gradient(145deg, #292216, #100f0b);
+  box-shadow: 0 5px 16px #000b;
+  color: #b7a27b;
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(10px, 1.5vw, 16px);
+}
+
+.clue:nth-child(2) { grid-column: 3; grid-row: 1; transform: rotate(4deg); }
+.clue:nth-child(3) { grid-column: 5; grid-row: 1; transform: rotate(-3deg); }
+.clue:nth-child(4) { grid-column: 1; grid-row: 2; transform: rotate(3deg); }
+.clue:nth-child(5) { grid-column: 6; grid-row: 2; transform: rotate(-4deg); }
+.clue:nth-child(6) { grid-column: 2; grid-row: 3; transform: rotate(-2deg); }
+.clue:nth-child(7) { grid-column: 5; grid-row: 3; transform: rotate(3deg); }
+
+.thread {
+  position: absolute;
+  height: 1px;
+  background: #8f3025;
+  transform-origin: left center;
+  opacity: .65;
+  width: 30%;
+}
+.thread.one { top: 22%; left: 14%; transform: rotate(23deg); }
+.thread.two { top: 36%; left: 46%; transform: rotate(-28deg); }
+.thread.three { top: 57%; left: 19%; transform: rotate(-12deg); }
+
+.center {
+  width: min(100%, 560px);
+  text-align: center;
+  padding: 42px 22px;
+  background: linear-gradient(135deg, #0c0b08ed, #11100bed);
+  border: 1px solid #9d773d;
+  box-shadow: 0 0 60px #000, 0 0 45px #9b6a2517;
+  position: relative;
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: .42em;
+  color: #a28a60;
+  margin-bottom: 25px;
+}
+
+.chess {
+  font-size: 48px;
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 0 25px #c9a45c55;
+  margin-bottom: 17px;
+}
+
+h1 {
+  font-size: clamp(30px, 6vw, 53px);
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: .08em;
+  margin: 0;
+  color: var(--pale-gold);
+  text-shadow: 0 0 30px #c9a45c22;
+}
+
+.rule {
+  height: 1px;
+  width: 100px;
+  background: var(--gold);
+  margin: 25px auto;
+}
+
+.tagline {
+  font-size: clamp(10px, 2vw, 13px);
+  letter-spacing: .2em;
+  line-height: 2;
+  color: #c0a775;
+}
+
+.note {
+  font-family: 'Special Elite', monospace;
+  color: #938064;
+  font-size: 12px;
+  line-height: 1.9;
+  margin-top: 24px;
+}
+
+button {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--pale-gold);
+  padding: 15px 48px;
+  margin-top: 29px;
+  font: 600 13px 'Cinzel', Georgia, serif;
+  letter-spacing: .25em;
+  cursor: pointer;
+  transition: .3s;
+}
+
+button:hover {
+  color: #080806;
+  background: var(--gold);
+  box-shadow: 0 0 30px #c9a45c40;
+}
+
+.welcome {
+  display: none;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid #5e4827;
+  font-family: 'Special Elite', monospace;
+  line-height: 2;
+  font-size: 14px;
+}
+
+.welcome.show { display: block; }
+
+.footer {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: .3em;
+  color: #756345;
+}
+
+@media (max-width: 600px) {
+  .clues { inset: 4% 3% 23%; gap: 5px; }
+  .clue { padding: 3px; font-size: 9px; }
+  .center { padding: 35px 16px; }
+  .eyebrow { letter-spacing: .2em; }
+  .wall { inset: 3% 2% 23%; }
+}
+</style>
 </head>
 <body>
-  <main>
-    <div class="symbol">♟</div>
-    <h1>ALWAYS, SOMEWHERE</h1>
-    <div class="tagline">A place where you can always find me.</div>
-    <hr class="line">
-    <p>Every detail has a purpose.<br>Every move has a meaning.<br>Some connections are worth finding again.</p>
-    <button onclick="document.getElementById('note').style.display='block'; this.style.display='none';">ENTER</button>
-    <p id="note">You found your way here.<br>Somewhere, a conversation is waiting.<br><br><em>This place is still being built.</em></p>
-    <footer>A PRIVATE CORNER OF THE WORLD</footer>
-  </main>
+<main class="room">
+  <div class="wall"></div>
+
+  <div class="clues" aria-hidden="true">
+    <div class="clue">THE<br>BEGINNING</div>
+    <div class="clue">EVERY MOVE<br>HAS A REASON</div>
+    <div class="clue">♟<br>THE KING'S<br>GAMBIT</div>
+    <div class="clue">TRUST<br>IS A CHOICE</div>
+    <div class="clue">NOTHING<br>IS RANDOM</div>
+    <div class="clue">PLAN<br>EXECUTE<br>DISAPPEAR</div>
+    <div class="clue">SOMEWHERE<br>BEYOND THE MAP</div>
+  </div>
+
+  <div class="thread one"></div>
+  <div class="thread two"></div>
+  <div class="thread three"></div>
+
+  <section class="center">
+    <div class="eyebrow">PRIVATE FILE &nbsp; · &nbsp; NO. 001</div>
+    <div class="chess">♟</div>
+    <h1>ALWAYS,<br>SOMEWHERE</h1>
+    <div class="rule"></div>
+    <div class="tagline">A PLACE WHERE YOU CAN ALWAYS FIND ME.</div>
+    <div class="note">Every mystery begins with a question.<br>Every story begins with a choice.</div>
+
+    <button id="enterButton" type="button">ENTER THE UNKNOWN</button>
+
+    <div class="welcome" id="welcome">
+      You've found your way here.<br>
+      Some places are not meant to be found.<br>
+      Some connections are worth the search.<br><br>
+      <span style="color:#d2b16e">WELCOME, STRANGER.</span>
+    </div>
+  </section>
+
+  <div class="footer">OBSERVE · THINK · DISCOVER</div>
+</main>
+
+<script>
+document.getElementById('enterButton').addEventListener('click', function () {
+  const note = document.getElementById('welcome');
+  const isOpen = note.classList.toggle('show');
+  this.textContent = isOpen ? 'CLOSE THE FILE' : 'ENTER THE UNKNOWN';
+});
+</script>
 </body>
 </html>
